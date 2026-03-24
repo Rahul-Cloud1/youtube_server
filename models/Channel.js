@@ -1,23 +1,45 @@
 import mongoose from "mongoose";
+channelSchema.virtual("videoList", {
+  ref: "Video",
+  localField: "_id",
+  foreignField: "channelId"
+});
 
 const channelSchema = new mongoose.Schema({
-
-  channelName:String,
-  owner:String,
-  description:String,
-  banner:String,
-
-  subscribers:{
-    type:Number,
-    default:0
+  channelName: {
+    type: String,
+    required: true,
   },
 
-  videos:[
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+
+  description: String,
+
+  banner: String,
+
+  subscribers: [
     {
-      type:String
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }
+  ],
+  subscribersCount: {
+  type: Number,
+  default: 0
+},
+
+  videos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Video",
     }
   ]
 
-});
+}, { timestamps: true });
+Channel.findById(id).populate("videoList");
 
-export default mongoose.model("Channel",channelSchema);
+export default mongoose.model("Channel", channelSchema);

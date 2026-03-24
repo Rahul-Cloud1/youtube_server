@@ -1,11 +1,25 @@
 import mongoose from "mongoose";
+
+
 const commentSchema = new mongoose.Schema({
-  videoId:String,
-  userId:String,
-  text:String,
-  createdAt:{
-    type:Date,
-    default:Date.now
+  videoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Video",
+    required: true,
+  },
+
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+
+  text: {
+    type: String,
+    required: true,
   }
-}); 
-export default mongoose.model("Comment",commentSchema);
+
+}, { timestamps: true });
+commentSchema.index({ videoId: 1 });
+
+export default mongoose.model("Comment", commentSchema);

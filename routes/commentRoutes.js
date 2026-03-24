@@ -1,10 +1,18 @@
 import express from "express";
-import {getComments,addComment,deleteComment} from "../controllers/commentController.js";
+import {
+  getComments,
+  addComment,
+  updateComment,
+  deleteComment
+} from "../controllers/commentController.js";
+
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/:videoId",getComments);
-router.post("/",addComment);
-router.delete("/:id",deleteComment);
+router.get("/:videoId", getComments);
+router.post("/", protect, addComment);
+router.put("/:id", protect, updateComment);
+router.delete("/:id", protect, deleteComment);
 
 export default router;
