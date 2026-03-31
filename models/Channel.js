@@ -23,11 +23,6 @@ const channelSchema = new mongoose.Schema({
     }
   ],
 
-  subscribersCount: {
-    type: Number,
-    default: 0
-  },
-
   videos: [
     {
       type: mongoose.Schema.Types.ObjectId,
