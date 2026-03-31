@@ -39,6 +39,9 @@ channelSchema.virtual("videoList", {
   foreignField: "channelId"
 });
 
+channelSchema.set("toObject", { virtuals: true });
+channelSchema.set("toJSON", { virtuals: true });
+
 Channel.findById(id).populate("videoList");
 
 export default mongoose.model("Channel", channelSchema);
