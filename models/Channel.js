@@ -1,9 +1,4 @@
 import mongoose from "mongoose";
-channelSchema.virtual("videoList", {
-  ref: "Video",
-  localField: "_id",
-  foreignField: "channelId"
-});
 
 const channelSchema = new mongoose.Schema({
   channelName: {
@@ -27,10 +22,11 @@ const channelSchema = new mongoose.Schema({
       ref: "User",
     }
   ],
+
   subscribersCount: {
-  type: Number,
-  default: 0
-},
+    type: Number,
+    default: 0
+  },
 
   videos: [
     {
@@ -40,6 +36,14 @@ const channelSchema = new mongoose.Schema({
   ]
 
 }, { timestamps: true });
+
+// Virtual populate
+channelSchema.virtual("videoList", {
+  ref: "Video",
+  localField: "_id",
+  foreignField: "channelId"
+});
+
 Channel.findById(id).populate("videoList");
 
 export default mongoose.model("Channel", channelSchema);
