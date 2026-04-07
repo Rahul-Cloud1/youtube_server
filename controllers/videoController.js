@@ -114,20 +114,17 @@ export const updateVideo = async (req, res) => {
 // ✅ ADD VIEW
 export const addView = async (req, res) => {
   try {
-    const video = await Video.findById(req.params.id);
+    const video = await Video.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } },
+      { new: true }
+    );
 
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    video.views += 1;
-    await video.save();
-
-    res.status(200).json({
-      message: "View added",
-      views: video.views,
-    });
-
+    res.json(video);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -136,20 +133,17 @@ export const addView = async (req, res) => {
 // ✅ LIKE VIDEO
 export const likeVideo = async (req, res) => {
   try {
-    const video = await Video.findById(req.params.id);
+    const video = await Video.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { likes: 1 } },
+      { new: true }
+    );
 
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    video.likes += 1;
-    await video.save();
-
-    res.status(200).json({
-      message: "Liked",
-      likes: video.likes,
-    });
-
+    res.json(video);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -158,20 +152,17 @@ export const likeVideo = async (req, res) => {
 // ✅ DISLIKE VIDEO
 export const dislikeVideo = async (req, res) => {
   try {
-    const video = await Video.findById(req.params.id);
+    const video = await Video.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { dislikes: 1 } },
+      { new: true }
+    );
 
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    video.dislikes += 1;
-    await video.save();
-
-    res.status(200).json({
-      message: "Disliked",
-      dislikes: video.dislikes,
-    });
-
+    res.json(video);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
