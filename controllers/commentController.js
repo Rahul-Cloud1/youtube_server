@@ -20,31 +20,24 @@ export const getComments = async (req, res) => {
 // ✅ ADD COMMENT (Protected)
 export const addComment = async (req, res) => {
   try {
-    const { text, videoId } = req.body;
+    const { text } = req.body;
+    const { videoId } = req.params; // now videoId comes from URL
 
     if (!text) {
-      return res.status(400).json({
-        message: "Comment cannot be empty",
-      });
+      return res.status(400).json({ message: "Comment cannot be empty" });
     }
 
     const comment = new Comment({
       text,
       videoId,
-      userId: req.user.id, // 🔥 link user
+      userId: req.user.id,
     });
 
     await comment.save();
 
-    res.status(201).json({
-      message: "Comment added",
-      comment,
-    });
-
+    res.status(201).json({ message: "Comment added", comment });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 

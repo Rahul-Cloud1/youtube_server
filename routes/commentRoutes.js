@@ -11,7 +11,7 @@ import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/:videoId", getComments);
-router.post("/", protect, addComment);
+router.post("/:videoId", protect, addComment);
 router.put("/:id", protect, updateComment);
 router.delete("/:id", protect, deleteComment);
 
