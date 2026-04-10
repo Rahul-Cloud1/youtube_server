@@ -101,3 +101,39 @@ export const getMe = async (req, res) => {
     });
   }
 };
+
+// ✅ UPDATE USER PROFILE (Protected)
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { name, username } = req.body;
+
+    // Validation
+    if (name && name.trim().length < 2) {
+      return res.status(400).json({
+        message: "Name must be at least 2 characters",
+      });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, username },
+      { new: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

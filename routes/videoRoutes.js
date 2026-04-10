@@ -2,6 +2,7 @@ import express from "express";
 import {
   getVideos,
   getVideoById,
+  getVideosByChannel,
   createVideo,
   deleteVideo,
   updateVideo,
@@ -14,14 +15,19 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+// 📺 PUBLIC ROUTES
 router.get("/", getVideos);
-router.get("/:id", getVideoById);
-router.post("/", protect, createVideo);
-router.put("/:id", protect, updateVideo);
-router.delete("/:id", protect, deleteVideo);
+router.get("/channel/:channelId", getVideosByChannel);
 
-router.put("/view/:id", addView);
+// 🎯 PROTECTED ROUTES (must come after specific routes to avoid conflicts)
+router.post("/", protect, createVideo);
 router.put("/like/:id", protect, likeVideo);
 router.put("/dislike/:id", protect, dislikeVideo);
+router.put("/view/:id", addView);
+
+// 📝 SINGLE VIDEO ROUTES (generic patterns - must come last)
+router.get("/:id", getVideoById);
+router.put("/:id", protect, updateVideo);
+router.delete("/:id", protect, deleteVideo);
 
 export default router;
